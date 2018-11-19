@@ -34,7 +34,8 @@ var schema = new Schema({
     updated:                    {type: Date, default: Date.now}
 });
 
-schema.methods.computeScore = function (cb) {
+schema.methods.updateScore = function (cb) {
+    let score = 0;
     let base = 100;
     let fieldWeights = {
         full_name:                  .6,
@@ -62,31 +63,44 @@ schema.methods.computeScore = function (cb) {
         ff_ratio:                   1,
     };
     let valueWeights = {
-        full_name:                  {"{val}==null||{val}.length==0":0, "{val}.length>0":1},
-        profile_pic_url:            {"{val}==null||{val}.length==0":0, "{val}.length>0":1},
-        is_private:                 {"{val}==true":0, "{val}==false":1},
-        is_verified:                {"{val}==true":1, "{val}==false":0},
-        followed_by_viewer:         {"{val}==true":1, "{val}==false":0},
-        requested_by_viewer:        {"{val}==true":1, "{val}==false":0},
+        full_name:                  {"val==null||val.length==0":0, "val.length>0":1},
+        profile_pic_url:            {"val==null||val.length==0":0, "val.length>0":1},
+        is_private:                 {"val==true":0, "val==false":1},
+        is_verified:                {"val==true":1, "val==false":0},
+        followed_by_viewer:         {"val==true":1, "val==false":0},
+        requested_by_viewer:        {"val==true":1, "val==false":0},
 
         //from user page
-        biography:                  {"{val}==null||{val}.length==0":0, "{val}.length>0":1},
-        external_url:               {"{val}==null||{val}.length==0":1, "{val}.length>0":0},
-        has_profile_pic:            {"{val}==true":1, "{val}==false":0},
-        edge_followed_by:           {"{val}<=200":0, "{val}<=500":.3, "{val}<=1000":.5, "{val}<=2000":.7, "{val}<=10000":.9, "{val}<=20000":.7, "{val}<=50000":.5, "{val}>50000":.1},
-        edge_follow:                {"{val}<=200":.9, "{val}<=500":.7, "{val}<=1000":.5, "{val}<=2000":.3, "{val}>2000":0},
-        follows_viewer:             {"{val}==true":1, "{val}==false":0},
-        has_blocked_viewer:         {"{val}==true":0, "{val}==false":1},
-        has_requested_viewer:       {"{val}==true":1, "{val}==false":0},
-        is_business_account:        {"{val}==true":.5, "{val}==false":1},
-        is_joined_recently:         {"{val}==true":0, "{val}==false":1},
-        connected_fb_page:          {"{val}==true":1, "{val}==false":0},
-        timeline_media_count:       {"{val}<=20":0, "{val}<=50":.2, "{val}<=100":.5, "{val}<=200":.7, "{val}<=500":.9, "{val}<=1000":.5, "{val}<=2000":.2, "{val}<=5000":.1, "{val}>5000":0},
+        biography:                  {"val==null||val.length==0":0, "val.length>0":1},
+        external_url:               {"val==null||val.length==0":1, "val.length>0":0},
+        has_profile_pic:            {"val==true":1, "val==false":0},
+        edge_followed_by:           {"val<=200":0, "val<=500":.3, "val<=1000":.5, "val<=2000":.7, "val<=10000":.9, "val<=20000":.7, "val<=50000":.5, "val>50000":.1},
+        edge_follow:                {"val<=200":.9, "val<=500":.7, "val<=1000":.5, "val<=2000":.3, "val>2000":0},
+        follows_viewer:             {"val==true":1, "val==false":0},
+        has_blocked_viewer:         {"val==true":0, "val==false":1},
+        has_requested_viewer:       {"val==true":1, "val==false":0},
+        is_business_account:        {"val==true":.5, "val==false":1},
+        is_joined_recently:         {"val==true":0, "val==false":1},
+        connected_fb_page:          {"val==true":1, "val==false":0},
+        timeline_media_count:       {"val<=20":0, "val<=50":.2, "val<=100":.5, "val<=200":.7, "val<=500":.9, "val<=1000":.5, "val<=2000":.2, "val<=5000":.1, "val>5000":0},
 
         //derivative fields
         //followings/followers
-        ff_ratio:                   {"{val}<=.01":1, "{val}<=.02":.9, "{val}<=0.05":.8, "{val}<=.1":.7, "{val}<=.2":.6, "{val}<=.3":.5, "{val}<=.4":.4, "{val}<=.5":.3, "{val}<=.8":.2, "{val}<1":.1, "{val}>=1":0},
-    }
+        ff_ratio:                   {"val<=.01":1, "val<=.02":.9, "val<=0.05":.8, "val<=.1":.7, "val<=.2":.6, "val<=.3":.5, "val<=.4":.4, "val<=.5":.3, "val<=.8":.2, "val<1":.1, "val>=1":0},
+    };
+
+    Object.keys(fieldWeights).forEach(field => {
+        let val = this[field];
+        let valWeight = 0;
+        Object.keys(valueWeights[field]).forEach(condition => {
+            if (eval(condition)) {
+                valWeight = valueWeights[field][condition];
+            }
+        });
+        score += fieldWeights * valWeight;
+    });
+    this.score = Math.round(score / Object.keys(fieldWeights).length * base);
+    this.markModified('score');
 };
 
 module.exports.Follower = mongoose.model('Follower', schema);
