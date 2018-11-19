@@ -3,14 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-global.ghost = require('./process/ghost');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/ghost');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiGhostsRouter = require('./routes/api/ghosts');
 
 var app = express();
-ghost.start();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

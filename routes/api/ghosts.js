@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var ghost = require('../../process/ghost');
 //const {Worker} = require('worker_threads');
 
 var router = express.Router();
@@ -16,7 +17,7 @@ router.get('/', function(req, res, next) {
         }
     });*/
 
-    ghost.getStatus().then(() => {
+    ghost.runTask().then(() => {
 
     });
     res.send(JSON.stringify('asd'))
