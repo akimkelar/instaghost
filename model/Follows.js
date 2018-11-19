@@ -37,29 +37,29 @@ var schema = new Schema({
 schema.methods.computeScore = function (cb) {
     let base = 100;
     let fieldWeights = {
-        full_name:                  .8,
-        profile_pic_url:            .8,
-        is_private:                 .3,
+        full_name:                  .6,
+        profile_pic_url:            .6,
+        is_private:                 .2,
         is_verified:                .3,
-        followed_by_viewer:         1,
-        requested_by_viewer:        1,
+        followed_by_viewer:         .9,
+        requested_by_viewer:        .7,
 
         //from user page
         biography:                  .4,
-        external_url:               .7,
-        has_profile_pic:            .8,
-        edge_followed_by:           .4,
-        edge_follow:                .4,
+        external_url:               .6,
+        has_profile_pic:            .7,
+        edge_followed_by:           .5,
+        edge_follow:                .5,
         follows_viewer:             1,
         has_blocked_viewer:         1,
-        has_requested_viewer:       .5,
+        has_requested_viewer:       .3,
         is_business_account:        .4,
-        is_joined_recently:         .9,
-        connected_fb_page:          .7,
-        timeline_media_count:       .9,
+        is_joined_recently:         .8,
+        connected_fb_page:          .6,
+        timeline_media_count:       .8,
 
         //derivative fields
-        ff_ratio:                   .9,
+        ff_ratio:                   1,
     };
     let valueWeights = {
         full_name:                  {"{val}==null||{val}.length==0":0, "{val}.length>0":1},
