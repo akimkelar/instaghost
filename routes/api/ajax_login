@@ -1,0 +1,62 @@
+Request URL:https://www.instagram.com/accounts/login/ajax/
+Request Method:POST
+Status Code:200
+Remote Address:31.13.84.174:443
+Referrer Policy:no-referrer-when-downgrade
+
+Response Headers
+access-control-allow-credentials:true
+access-control-allow-origin:https://www.instagram.com
+cache-control:private, no-cache, no-store, must-revalidate
+content-language:en
+content-length:99
+content-security-policy:report-uri https://www.instagram.com/security/csp_report/; default-src 'self' https://www.instagram.com; img-src https: data: blob:; font-src https: data:; media-src 'self' blob: https://www.instagram.com https://*.cdninstagram.com https://*.fbcdn.net; manifest-src 'self' https://www.instagram.com; script-src 'self' https://instagram.com https://www.instagram.com https://*.www.instagram.com https://*.cdninstagram.com wss://www.instagram.com https://*.facebook.com https://*.fbcdn.net https://*.facebook.net 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' https://*.www.instagram.com https://www.instagram.com 'unsafe-inline'; connect-src 'self' https://instagram.com https://www.instagram.com https://*.www.instagram.com https://graph.instagram.com https://*.graph.instagram.com https://*.cdninstagram.com https://api.instagram.com wss://www.instagram.com wss://edge-chat.instagram.com https://*.facebook.com https://*.fbcdn.net https://*.facebook.net chrome-extension://boadgeojelhgndaghljhdicfkmllpafd; worker-src 'self' https://www.instagram.com; frame-src 'self' https://instagram.com https://www.instagram.com https://staticxx.facebook.com https://www.facebook.com https://web.facebook.com https://connect.facebook.net https://m.facebook.com; object-src 'none'; upgrade-insecure-requests
+content-type:application/json; charset=utf-8
+date:Tue, 20 Nov 2018 08:12:17 GMT
+expires:Sat, 01 Jan 2000 00:00:00 GMT
+pragma:no-cache
+set-cookie:target=""; Domain=www.instagram.com; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:sessionid=IGSC258070824eaedb08bf0fdd96d856366cf9500549ea595e955bef6c5e159c83d0%3A89TCiyV7fSaLxMCplOz08o2u5NHS8iSZ%3A%7B%22_auth_user_id%22%3A907798820%2C%22_auth_user_backend%22%3A%22accounts.backends.CaseInsensitiveModelBackend%22%2C%22_auth_user_hash%22%3A%22%22%2C%22_platform%22%3A4%2C%22_token_ver%22%3A2%2C%22_token%22%3A%22907798820%3ApfkdGGpvUf35uC5y035l4jaqqzTOWjza%3A3c413ab6853f90b31065c235524d4a89f928235678a0cbedb1fc034901de5142%22%2C%22last_refreshed%22%3A1542701537.3002912998%7D; Domain=.instagram.com; expires=Wed, 20-Nov-2019 08:12:17 GMT; HttpOnly; Max-Age=31536000; Path=/; Secure
+set-cookie:target=""; Domain=instagram.com; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:ds_user_id=907798820; Domain=.instagram.com; expires=Mon, 18-Feb-2019 08:12:17 GMT; Max-Age=7776000; Path=/; Secure
+set-cookie:rur=FRC; Domain=.instagram.com; HttpOnly; Path=/; Secure
+set-cookie:shbts=1542701537.2993321; Domain=.instagram.com; expires=Tue, 27-Nov-2018 08:12:17 GMT; HttpOnly; Max-Age=604800; Path=/; Secure
+set-cookie:target=""; Domain=.instagram.com; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:target=""; Domain=i.instagram.com; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:target=""; Domain=.i.instagram.com; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:shbid=4392; Domain=.instagram.com; expires=Tue, 27-Nov-2018 08:12:17 GMT; HttpOnly; Max-Age=604800; Path=/; Secure
+set-cookie:target=""; Domain=.www.instagram.com; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:target=""; expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+set-cookie:csrftoken=BqZUJKGGxTIROml93bYZAUU69EEB5JSl; Domain=.instagram.com; expires=Tue, 19-Nov-2019 08:12:17 GMT; Max-Age=31449600; Path=/; Secure
+status:200
+strict-transport-security:max-age=60
+vary:Cookie, Accept-Language
+x-content-type-options:nosniff
+x-frame-options:SAMEORIGIN
+x-robots-tag:noindex
+x-xss-protection:0
+
+Request Headers
+:authority:www.instagram.com
+:method:POST
+:path:/accounts/login/ajax/
+:scheme:https
+accept:*/*
+accept-encoding:gzip, deflate, br
+accept-language:en-US,en;q=0.9,uk;q=0.8,ru;q=0.7,fr;q=0.6
+content-length:105
+content-type:application/x-www-form-urlencoded
+cookie:rur=FRC; csrftoken=VupP81Bfm1OxGxNY8VXFVcRYgcADfHfp; mid=W_PBzwAEAAFVmDcRfzgBeyKnJdqA; mcd=3
+origin:https://www.instagram.com
+referer:https://www.instagram.com/accounts/login/?source=auth_switcher
+user-agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36
+x-csrftoken:VupP81Bfm1OxGxNY8VXFVcRYgcADfHfp
+x-instagram-ajax:a6abd1200036
+x-requested-with:XMLHttpRequest
+
+Form Data
+view source
+view URL encoded
+username:akimkelar
+password:****
+queryParams:{"source":"auth_switcher"}

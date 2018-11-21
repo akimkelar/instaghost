@@ -1,9 +1,5 @@
 const {Worker} = require('worker_threads');
 
-class Ghost {
-
-}
-
 let ghost = {
     workers: [],
     lastId: null,
@@ -11,7 +7,8 @@ let ghost = {
     runTask: function ()
     {
         return new Promise((resolve, reject) => {
-            const worker = new Worker('./worker/ghost.js', {workerData: {nickname: 'akimkelar'}});
+            //todo username from User model
+            const worker = new Worker('./worker/ghost.js', {workerData: {username: 'akimkelar'}});
 
             worker.on('message', (m) => {
                 if (m.type == 'result') {

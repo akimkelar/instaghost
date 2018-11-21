@@ -1,10 +1,10 @@
 const {parentPort, workerData} = require('worker_threads');
-const https = require('https');
+const needle = require('needle');
 
 let ghostWorker = {
     percentage: 0,
 
-    init: () => {
+    init: function () {
        parentPort.on('message', (m) => {
            cb = 'on'+m.type;
            if (typeof this[cb] == "function") {
@@ -15,7 +15,43 @@ let ghostWorker = {
        this.process();
     },
 
-    process: () => {
+    process: async function () {
+        //login
+        /*let cookies, rollout_hash, csrf_token;
+        await needle('get', "https://www.instagram.com/accounts/login/?source=auth_switcher")
+            .then(function(resp) {
+                cookies = resp.cookies;
+                //get ,"rollout_hash":"a6abd1200036",
+                rollout_hash = resp.body.match(/rollout_hash":"(\w+)"/)[1];
+                // {"csrf_token":"9mBa1KSUD0L8owJBLX3YYoZZ9di21WM8",
+                csrf_token = resp.body.match(/csrf_token":"(\w+)"/)[1];
+            });
+
+
+        needle.post(
+            "https://www.instagram.com/accounts/login/ajax/",
+            {
+                username: "akimkelar",
+                password: "***",
+                queryParams: {"source":"auth_switcher"}
+            },
+            {
+                multipart: true,
+                cookies: cookies,
+                headers: {
+                    "x-csrftoken": csrf_token,
+                    "x-instagram-ajax": rollout_hash,
+                    "x-requested-with": "XMLHttpRequest"
+                }
+            },
+            function (err, resp) {
+                console.log(resp);
+                /!*needle('get', "https://www.instagram.com/").then(function(resp) {
+                    console.log(resp.body);
+                });*!/
+            }
+        );*/
+
         // for followers get utl like
         // https://www.instagram.com/graphql/query/?query_hash=56066f031e6239f35a904ac20c9f37d9&variables=%7B%22id%22%3A%22907798820%22%2C%22include_reel%22%3Atrue%2C%22fetch_mutual%22%3Atrue%2C%22first%22%3A24%7D
         // find key in script like
@@ -26,23 +62,6 @@ let ghostWorker = {
         // pagination like
         // https://www.instagram.com/graphql/query/?query_hash=56066f031e6239f35a904ac20c9f37d9&variables=%7B%22id%22%3A%22907798820%22%2C%22include_reel%22%3Atrue%2C%22fetch_mutual%22%3Afalse%2C%22first%22%3A12%2C%22after%22%3A%22QVFEQnhwdV9HNUQyWmVFYnZ6a2UtWGNCdHYwZGJDY1Y3ZWJQeEh0UDFwSWlwRnhObFBPSFZla1ZKNVRJMFJZSVZTVzN0TWJXeDlVQ0IxMTM4a0pQSE8zbg%3D%3D%22%7D
         // after is end_cursor from previous response
-
-        //get profile page
-        https.get('https://www.instagram.com/'+workerData.nickname+'/', (resp) => {
-            let data = '';
-
-            // A chunk of data has been recieved.
-            resp.on('data', (chunk) => {
-                data += chunk;
-            });
-
-            // The whole response has been received. Print out the result.
-            resp.on('end', () => {
-                //data
-            });
-        }).on("error", (err) => {
-            console.log("Error: " + err.message);
-        });
     },
 
     onstatus: (m) => {

@@ -30,6 +30,9 @@ var schema = new Schema({
 
     //derivative fields
     ff_ratio:                   Number,
+    likes:                      {type: Map, of: Number},
+    comments:                   {type: Map, of: Number},
+
     score:                      {type: Number, index: true},
     updated:                    {type: Date, default: Date.now}
 });
