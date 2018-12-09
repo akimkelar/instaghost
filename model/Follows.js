@@ -4,7 +4,7 @@ var User = require('./User');
 
 var schema = new Schema({
     //from followers feed
-    viewer:                     {type: Schema.types.ObjectId, required:true, index: true, ref: 'User'},
+    viewer:                     {type: Schema.Types.ObjectId, required:true, index: true, ref: 'User'},
     id:                         {type: Number, required: true, index: true},
     username:                   {type: String, required: true, index: true},
     full_name:                  String,

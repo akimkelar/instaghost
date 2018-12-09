@@ -1,5 +1,6 @@
 const {parentPort, workerData} = require('worker_threads');
 const needle = require('needle');
+const User = require('../model/User');
 
 let ghostWorker = {
     percentage: 0,
@@ -16,23 +17,40 @@ let ghostWorker = {
     },
 
     process: async function () {
-        //login
-        /*let cookies, rollout_hash, csrf_token;
+        let user, cookies, rollout_hash, csrf_token;
+
+        //get user
+        await User.findOne({username: workerData.username}).exec(function (e,u) {console.log(e,u); user = u});
+        return;
+        //get user cookies
+        cookies = user.cookies.getCookiesObject();
+        //check login
+        await needle.get("https://www.instagram.com/", {cookies: cookies})
+            .then(function(resp) {
+                console.log(resp.cookies);
+            });
+
+        //ds_user_id: '907798820',
+        //   sessionid: '907798820:PtER0ih4bL9jYT:8'
+        // login
+
+        return;
+
         await needle('get', "https://www.instagram.com/accounts/login/?source=auth_switcher")
             .then(function(resp) {
                 cookies = resp.cookies;
+                console.log(cookies);
                 //get ,"rollout_hash":"a6abd1200036",
                 rollout_hash = resp.body.match(/rollout_hash":"(\w+)"/)[1];
                 // {"csrf_token":"9mBa1KSUD0L8owJBLX3YYoZZ9di21WM8",
                 csrf_token = resp.body.match(/csrf_token":"(\w+)"/)[1];
             });
 
-
         needle.post(
             "https://www.instagram.com/accounts/login/ajax/",
             {
                 username: "akimkelar",
-                password: "***",
+                password: "stupidchildrencutacattle",
                 queryParams: {"source":"auth_switcher"}
             },
             {
@@ -45,12 +63,12 @@ let ghostWorker = {
                 }
             },
             function (err, resp) {
-                console.log(resp);
-                /!*needle('get', "https://www.instagram.com/").then(function(resp) {
+                console.log(resp.cookies);
+                /*needle('get', "https://www.instagram.com/").then(function(resp) {
                     console.log(resp.body);
-                });*!/
+                });*/
             }
-        );*/
+        );
 
         // for followers get utl like
         // https://www.instagram.com/graphql/query/?query_hash=56066f031e6239f35a904ac20c9f37d9&variables=%7B%22id%22%3A%22907798820%22%2C%22include_reel%22%3Atrue%2C%22fetch_mutual%22%3Atrue%2C%22first%22%3A24%7D
