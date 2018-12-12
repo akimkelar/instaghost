@@ -1,25 +1,30 @@
 var express = require('express');
 let Encoder = require('../../../service/Encoder');
 let User = require('../../../model/User');
+let insta = require('../../../service/InstaService');
 
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
-    res.header('Content-type', 'application/json');
 
-    const username = req.body.user;
-    const token = req.body.token;
-    let valid = false;
+    const username = req.body.username;
+    const password = req.body.password;
 
-    console.log(username);
+    console.log('Token: u,p: ', username, password);
 
-    User.findOne({username: username}, function (err, user) {
-        if (user && user.token) {
-            valid = token == user.token;
-        }
+    //check username and password
+    insta.signin(username, password).then(function (result) {
+        console.log('Token: result: ', result);
+
+        User.findOne({username: username}, function (err, user) {
+            if (!user) {
+                //create and save
+            }
+        });
 
         res.send(JSON.stringify({
-            valid: valid
+            session_id: 'asd',
+            error: false,
         }));
     });
 });

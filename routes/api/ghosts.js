@@ -1,11 +1,11 @@
 var express = require('express');
 var path = require('path');
-var ghost = require('../../service/ghost');
+var insta = require('../../service/InstaService');
 
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-    ghost.runTask().then((m) => {
+    insta.runTask().then((m) => {
         console.log('done', m);
     });
     res.send(JSON.stringify('asd'))

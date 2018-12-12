@@ -1,8 +1,35 @@
 const {Worker} = require('worker_threads');
 
-let ghost = {
+let InstaService = {
     workers: [],
     lastId: null,
+
+    signin: function (username, password) {
+        return new Promise((resolve, reject) => {
+            resolve(); return;
+            console.log('IS: starting worker');
+
+            const worker = new Worker('./worker/signin.js', {workerData: {username: username, password: password}});
+
+            worker.on('message', (m) => {
+                console.log('IS message', m);
+                if (m.type == 'result') {
+                    resolve(m);
+                }
+            });
+
+            worker.on('error', reject);
+
+            worker.on('exit', (code) => {
+                this.workers.splice(worker.threadId, 1);
+                if (code !== 0)
+                    reject(new Error(`Worker signin stopped with exit code ${code}`));
+            });
+
+            this.workers[worker.threadId] = worker;
+            this.lastId = worker.threadId;
+        });
+    },
 
     runTask: function ()
     {
@@ -51,4 +78,4 @@ let ghost = {
     }
 };
 
-module.exports = ghost;
+module.exports = InstaService;

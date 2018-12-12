@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiConfig = require('./routes/api/config');
 var apiAuthToken = require('./routes/api/auth/token');
+var apiAuthTokenCheck = require('./routes/api/auth/token-check');
 var apiGhostsRouter = require('./routes/api/ghosts');
 
 var app = express();
@@ -25,14 +26,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req, res, next) {res.header("Access-Control-Allow-Headers","*"); next(); });
-app.use(function(req, res, next) {res.header("Access-Control-Allow-Origin","http://localhost:4200"); next(); });
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Headers","*");
+  res.header("Access-Control-Allow-Origin","http://localhost:4200");
+  res.header('Content-type', 'application/json');
+  next();
+});
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/config', apiConfig);
 app.use('/api/auth/token', apiAuthToken);
+app.use('/api/auth/token-check', apiAuthTokenCheck);
 app.use('/api/ghosts', apiGhostsRouter);
 
 // catch 404 and forward to error handler
