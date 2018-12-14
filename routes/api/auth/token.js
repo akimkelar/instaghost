@@ -1,32 +1,55 @@
+const config = require('../../../config');
+const Instagram = require('node-instagram').default;
 var express = require('express');
-let Encoder = require('../../../service/Encoder');
 let User = require('../../../model/User');
-let insta = require('../../../service/InstaService');
 
 var router = express.Router();
+let memorization = {};
 
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
+    const access_token = req.body.access_token;
+    let valid = false;
 
-    const username = req.body.username;
-    const password = req.body.password;
+    if (typeof memorization[access_token] == "undefined") {
 
-    console.log('Token: u,p: ', username, password);
+        const instagram = new Instagram({
+            clientId: config.clientId,
+            clientSecret: config.clientSecret,
+            accessToken: access_token,
+        });
 
-    //check username and password
-    insta.signin(username, password).then(function (result) {
-        console.log('Token: result: ', result);
+        await instagram.get('users/self', (err, data) => {
+            if (!err) {
+                valid = true;
 
-        User.findOne({username: username}, function (err, user) {
-            if (!user) {
-                //create and save
+                // check User model to save new user
+                User.findOne({username: data.data.username}, function (err, user) {
+                    if (!user) {
+                        user = new User({
+                            _id: data.data.id,
+                            username: data.data.username,
+                            profile_picture: data.data.profile_picture,
+                            full_name: data.data.full_name,
+                            counts: data.data.counts,
+                        });
+
+                        user.save(function (err) {
+                            if (err) return handleError(err);
+                        });
+                    }
+                });
             }
         });
 
-        res.send(JSON.stringify({
-            session_id: 'asd',
-            error: false,
-        }));
-    });
+        memorization[access_token] = valid;
+    }
+    else {
+        valid = memorization[access_token];
+    }
+
+    res.send(JSON.stringify({
+        valid: valid
+    }));
 });
 
 module.exports = router;

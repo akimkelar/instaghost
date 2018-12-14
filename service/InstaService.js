@@ -6,10 +6,10 @@ let InstaService = {
 
     signin: function (username, password) {
         return new Promise((resolve, reject) => {
-            resolve(); return;
+            // resolve(); return;
             console.log('IS: starting worker');
 
-            const worker = new Worker('./worker/signin.js', {workerData: {username: username, password: password}});
+            const worker = new Worker('./worker/Signin.js', {workerData: {username: username, password: password}});
 
             worker.on('message', (m) => {
                 console.log('IS message', m);

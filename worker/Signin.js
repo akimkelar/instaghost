@@ -1,23 +1,31 @@
 const {parentPort, workerData} = require('worker_threads');
 const needle = require('needle');
-const User = require('../model/User');
+const Worker = require('./Worker');
+const config = require('../config');
+const Instagram = require('node-instagram').default;
 
-let ghostWorker = {
-    progress: 0,
-
-    init: function () {
-       parentPort.on('message', (m) => {
-           cb = 'on'+m.type;
-           if (typeof this[cb] == "function") {
-               this[cb](m);
-           }
-       });
-
-       this.process();
-    },
-
+let Signin = Object.assign(Worker, {
     process: async function () {
-        let cookies, rollout_hash, csrf_token;
+
+        const instagram = new Instagram({
+            clientId: config.clientId,
+            clientSecret: config.clientSecret,
+            accessToken: config.accessToken,
+        });
+
+        instagram.get('users/self', (err, data) => {
+            if (err) {
+                // an error occured
+                console.log(err);
+            } else {
+                console.log(data);
+            }
+        });
+
+        return;
+
+        let cookies, rollout_hash, csrf_token, body;
+        // await needle('get', "https://www.instagram.com/");
 
         //check login
         await needle('get', "https://www.instagram.com/accounts/login/?source=auth_switcher")
@@ -29,8 +37,11 @@ let ghostWorker = {
                 // {"csrf_token":"9mBa1KSUD0L8owJBLX3YYoZZ9di21WM8",
                 csrf_token = resp.body.match(/csrf_token":"(\w+)"/)[1];
             });
+        this.setProgress(30);
 
         // login
+        // on wrong user ajax responds
+        // {"authenticated": false, "user": true, "status": "ok"}
         await needle.post(
             "https://www.instagram.com/accounts/login/ajax/",
             {
@@ -49,20 +60,19 @@ let ghostWorker = {
             },
             function (err, resp) {
                 cookies = {...cookies, ...resp.cookies};
+                body = resp.body;
             }
         );
+        this.setProgress(60);
 
-        parentPort.postMessage({
-            type: 'result',
+        this.complete({
             cookies: cookies,
             rollout_hash: rollout_hash,
-            csrf_token: csrf_token
+            csrf_token: csrf_token,
+            body: body,
         });
-    },
-
-    onstatus: (m) => {
-
     }
-};
+});
 
-ghostWorker.init();
+Signin.init();
+Signin.process();

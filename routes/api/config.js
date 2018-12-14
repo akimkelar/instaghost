@@ -1,6 +1,6 @@
+const config = require("../../config");
 var express = require('express');
 let Encoder = require('../../service/Encoder');
-
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -8,6 +8,7 @@ router.get('/', function(req, res, next) {
     res.send(JSON.stringify({
         api: {
             authKey: Encoder.getKey(),
+            clientId: config.clientId,
         }
     }));
 });
